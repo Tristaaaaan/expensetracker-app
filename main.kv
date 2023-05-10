@@ -1,0 +1,188 @@
+# First Window
+<FirstWindow>:
+    name: "first"
+    container: container
+
+    MDFloatLayout:
+        MDCard:
+            pos_hint: {'center_y': 0.85, 'center_x': .5}
+            md_bg_color: "skyblue"
+            theme_text_color: 'Custom'
+            size_hint: .9, .2
+            radius: 20
+            padding: 20
+            elevation: 2
+            BoxLayout:
+                orientation: 'vertical'
+                MDLabel:
+                    text: "This month of March"
+                    font_style:'Subtitle2'
+                    size_hint: .9, 0.1
+                    theme_text_color: 'Custom'
+                    text_color: "white"
+                    valign: 'middle'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    MDLabel:
+                        font_style: "H5"
+                        id: expense
+                        theme_text_color: 'Custom'
+                        text_color: "white"
+                        size_hint: 1, 1
+                    MDLabel:
+                        text: "PHP"
+                        font_style:'Subtitle2'
+                        halign: 'right'
+                        size_hint: .3, 1
+                        theme_text_color: 'Custom'
+                        text_color: "white"
+                        valign: 'middle'
+        BoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {'center_y': 0.78, 'center_x': .5}
+            size_hint: .9, .2
+            MDLabel:
+                text: "Today"
+                text_color: "gray"
+                size_hint: 0.9, .2
+                theme_text_color: 'Custom'
+                font_style: 'H4'
+            MDFlatButton:
+                text: 'View All'
+                pos_hint: {'x': 0, 'y': -0.02}
+                size_hint: 0.1, .27
+                text_color: "gray"
+                theme_text_color: 'Custom'
+                font_style: 'Caption'
+                on_release:
+                    root.view()
+        ScrollView:
+            pos_hint: {'center_y': .35, 'center_x': .5}
+            size_hint: .9, .6
+
+            MDList:
+                selected_color: 0, 0, 0, 0
+                theme_text_color: 'Custom'
+                id: container
+  
+
+        MDFloatingActionButton:
+            icon: 'plus-thick'
+            elevation_normal: 12
+            pos_hint: {'x': .75, 'y':.05}
+            on_release:
+                #root.show_task_dialog()
+                app.root.current = "add_expenses"
+                #root.manager.transition.direction = "up"
+
+<DialogContent>:
+    orientation: "vertical"
+    size_hint: 0.8, None
+    pos_hint_y: 1
+    height: "190dp"
+    spacing: 10
+    BoxLayout:
+        orientation: 'horizontal' 
+        MDIconButton:
+            id: food
+            icon: 'food'
+            text: "food"
+            padding: '5dp'
+            border: [20, 20, 20, 20]
+            text_color: "gray"
+            theme_text_color: 'Custom'
+            on_press:
+                root.icon_color(food)
+
+        MDIconButton:
+            id: acads
+            icon: 'school-outline'
+            padding: '5dp'
+            text: "acads"
+            border: [20, 20, 20, 20]
+            text_color: "gray"
+            theme_text_color: 'Custom'
+            on_press:
+                root.icon_color(acads)
+        MDIconButton:
+            id: transpo
+            icon: 'bus'
+            text: "bus"
+            padding: '5dp'
+            border: [20, 20, 20, 20]
+            text_color: "gray"
+            theme_text_color: 'Custom'
+            on_press:
+                root.icon_color(transpo)
+        MDIconButton:
+            id: others
+            icon: 'dots-horizontal-circle-outline'
+            padding: '5dp'
+            text: "others"
+            text_color: "gray"
+            theme_text_color: 'Custom'
+            border: [20, 20, 20, 20]
+            on_press:
+                root.icon_color(others)
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 5
+        MDTextField:
+            id: task_text
+            hint_text: "What was the cost?"
+        MDIconButton:
+            icon: 'calendar'
+            theme_text_color: 'Custom'
+            text_color: "gray"
+            on_release: 
+                root.show_date_picker()
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint: 1, .1
+        MDLabel:
+            valign: 'middle'
+            id: date_text
+            #pos_hint: {'center_y':0.1}
+            font_style: 'Caption'
+        MDLabel:
+            size_hint: 0.3, 0.1
+            id: error_message
+            theme_text_color: 'Custom'
+            text_color: 'red'
+            font_style: 'Subtitle1'
+            
+            halign: 'right'
+
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 10
+        padding: 0, 0, 0, 5
+        MDFlatButton:
+            text: "SAVE"
+            theme_text_color: 'Custom'
+            md_bg_color: "skyblue"
+            text_color: "white"
+            on_release: 
+                root.add_task()
+        MDFlatButton:
+            text: 'CANCEL'
+            on_release:
+                root.cancel()
+
+<ListItemWithIcon>:
+    id: the_list_item
+    font_style: 'Subtitle1'
+    secondary_font_style: 'Caption'
+    CustomIconLeftWidget:
+        icon: root.icon
+        disabled: True
+        theme_text_color: 'Custom'
+        radius: [10, 5, 10, 20]
+        disabled_color: "skyblue"
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: "gray"
+        on_release:
+            root.delete_item(the_list_item),
+            self.disabled = True
