@@ -1,0 +1,185 @@
+#AddExpenses
+
+<CustomMDBoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20, 20, 0, 0]  
+
+<AddExpenses>:
+    name: 'add_expenses'
+    food: food
+    acads: acads
+    transpo: transpo
+    others: others
+    price: price
+    MDBoxLayout:
+        size_hint: 1, 1
+        md_bg_color: [253/255, 60/255, 74/255, 1]
+        orientation: 'vertical'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        #Button
+        MDBoxLayout:
+            size_hint: .95, .1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            MDRelativeLayout:
+                pos_hint: {'center_y': .5}
+                size_hint: 1, 1
+                MDIconButton:
+                    pos_hint: {'center_y': .5}
+                    icon: 'arrow-left'
+                    halign: 'right'
+                    border: [20, 20, 20, 20]
+                    text_color: 'white'
+                    theme_text_color: 'Custom'
+                    on_release:
+                        root.back()
+                MDLabel:
+                    text: 'Expense'
+                    halign: 'center'
+                    text_color: 'white'
+                    theme_text_color: 'Custom'
+           
+        # Inputs           
+        MDBoxLayout:
+            size_hint: .90, .3
+            pos_hint: {'center_x': .5}
+            MDBoxLayout:
+                #md_bg_color: [1, 1, 1, 1]
+                orientation: 'vertical' 
+                size_hint: 1, None
+                MDLabel:
+                    pos_hint: {'center_y': .5}
+                    text: 'How much?'
+                    halign: 'left'
+                    font_size: '18sp'
+                    text_color: 252/255, 252/255, 252/255, 1
+                    opacity: 0.64
+                    theme_text_color: 'Custom'
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    pos_hint: {'center_y': .5}
+                MDTextField:
+                    id: price
+                    icon_left: 'currency-usd'
+                    text_color_focus: 'white'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: '0'
+                    theme_text_color: 'custom'
+                    text_color_normal: 'white'
+                    font_size: '64sp'
+                    line_color_normal: [253/255, 60/255, 74/255, 1]
+                    line_color_focus: 'white'
+                    icon_left_color_focus: 'white'
+                    icon_left_color_normal: 'white'
+        # Descriptions
+        CustomMDBoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, .6
+            padding: [0, dp(30), 0, dp(30)]
+            spacing: 20
+            MDBoxLayout:
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                size_hint: .90, .1
+                #md_bg_color: [145/255, 145/255, 159/255, 1]
+                MDLabel:
+                    text: 'Category'
+                    font_style: 'Body1'
+                    theme_text_color: 'Custom'
+                    text_color: [145/255, 145/255, 159/255, 1]
+            MDBoxLayout:
+                orientation: 'horizontal'
+                pos_hint: {'center_x': .5}
+                size_hint: .90, .1
+                MDBoxLayout:
+                    size_hint_x: 1
+                    MDIconButton:
+                        pos_hint: {'center_y': .5}
+                        id: food
+                        size_hint_x: 1
+                        icon: 'food'
+                        text: "food"
+                        border: [20, 20, 20, 20]
+                        text_color: "gray"
+                        theme_text_color: 'Custom'
+                        on_press:
+                            root.icon_color(food)
+                MDBoxLayout:
+                    size_hint_x: 1
+                    MDIconButton:
+                        id: acads
+                        size_hint_x: 1
+                        pos_hint: {'center_y': .5}
+                        icon: 'school-outline'
+                        text: "acads"
+                        border: [20, 20, 20, 20]
+                        text_color: "gray"
+                        theme_text_color: 'Custom'
+                        on_press:
+                            root.icon_color(acads)
+
+                MDBoxLayout:
+                    size_hint_x: 1
+                    MDIconButton:
+                        id: transpo
+                        size_hint_x: 1
+                        pos_hint: {'center_y': .5}
+                        icon: 'bus'
+                        text: "bus"
+                        border: [20, 20, 20, 20]
+                        text_color: "gray"
+                        theme_text_color: 'Custom'
+                        on_press:
+                            root.icon_color(transpo)
+                MDBoxLayout:
+                    size_hint_x: 1
+                    MDIconButton:
+                        size_hint_x: 1
+                        pos_hint: {'center_y': .5}
+                        id: others
+                        icon: 'dots-horizontal-circle-outline'
+                        text: "others"
+                        text_color: "gray"
+                        theme_text_color: 'Custom'
+                        border: [20, 20, 20, 20]
+                        on_press:
+                            root.icon_color(others)                
+            MDBoxLayout:
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                size_hint: .90, .1
+                #md_bg_color: [145/255, 145/255, 159/255, 1]
+                MDLabel:
+                    text: 'Description'
+                    font_style: 'Body1'
+                    theme_text_color: 'Custom'
+                    text_color: [145/255, 145/255, 159/255, 1]
+            MDBoxLayout:
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                size_hint: .90, .1
+                #md_bg_color: [145/255, 145/255, 159/255, 1]
+                MDTextField:
+                    size_hint_x: 1
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            MDBoxLayout:
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                size_hint: .90, .3
+            MDFlatButton:
+                text: 'Continue'
+                text_color: 'white'
+                size_hint: .95, .2
+                pos_hint: {'center_x': 0.50, 'center_y': 0.50}
+                theme_text_color: "Custom"
+                on_release:
+                    root.add_task()
+                canvas.before:
+                    Color:
+                        rgba: 127/255, 61/255, 255/255, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [10, 10, 10, 10]  
+            
