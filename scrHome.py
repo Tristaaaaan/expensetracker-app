@@ -40,7 +40,8 @@ class FirstWindow(Screen):
         Clock.schedule_once(self.todays_expenses)
 
     def todays_expenses(self, *args):
-        self.ids.currentmonth.text = 'This month of March'
+        current_month = datetime.now().strftime('%B')
+        self.ids.currentmonth.text = 'This month of ' + current_month
         try:
             current_date = datetime.now().strftime('%A, %B %d, %Y')
             day_expenses = db.obtain_expenses(current_date)
@@ -52,16 +53,20 @@ class FirstWindow(Screen):
                 for task in reversed(day_expenses):
                     if task[3] == 'food':
                         self.icon = "food"
+                        self.category = 'Food'
                     elif task[3] == 'acads':
                         self.icon = 'school-outline'
+                        self.category = 'School'
                     elif task[3] == 'bus':
+                        self.category = 'Transportation'
                         self.icon = 'bus'
                     else:
                         self.icon = 'dots-horizontal-circle-outline'
+                        self.category = 'Others'
 
                     convert_money = moneyFormat.money(int(task[1]))
                     add_expenses = SwipeToDeleteItem(
-                        text=convert_money, secondary_text=task[2], icon=self.icon)
+                        text=self.category, secondary_text=convert_money, icon=self.icon)
 
                     self.ids.container.add_widget(add_expenses)
             else:
