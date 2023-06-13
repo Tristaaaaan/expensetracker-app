@@ -4,42 +4,71 @@
     name: "view_expenses"
     listexpenses: listexpenses
     overall: overall
-    BoxLayout:
+    MDBoxLayout:
         size_hint: 1, 1
+        md_bg_color: 127/255, 61/255, 255/255, 1
         orientation: 'vertical'
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        spacing: 15
-        padding: 0, 10, 0, 0
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint: 0.9, .25
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            MDIconButton:
-                icon: 'chevron-left'
-                theme_text_color: 'Custom'
-                text_color: 'gray'
-                on_release: 
-                    root.back()
-            BoxLayout:
-                orientation: 'vertical'
-                spacing: 10
-                size_hint_x: 0.8
-                MDLabel:
-                    text: "You've already spent"
-                    text_color: "gray"
-                    size_hint: 0.9, 0.05
-                    valign: 'middle'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        #Button
+        MDBoxLayout:
+            size_hint: .95, .1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            MDRelativeLayout:
+                pos_hint: {'center_y': .5}
+                size_hint: 1, 1
+                MDIconButton:
+                    pos_hint: {'center_y': .5}
+                    icon: 'arrow-left'
+                    halign: 'right'
+                    border: [20, 20, 20, 20]
+                    text_color: 'white'
                     theme_text_color: 'Custom'
-                    font_style: 'H6'
+                    on_release:
+                        root.back()
+                MDLabel:
+                    text: 'Expense'
+                    halign: 'center'
+                    text_color: 'white'
+                    theme_text_color: 'Custom'
+
+
+           
+        # Inputs           
+        MDBoxLayout:
+            size_hint: .90, .3
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            MDBoxLayout:
+                pos_hint: {'center_y': .5}
+                orientation: 'vertical' 
+                size_hint: 1, None
+                MDLabel:
+                    pos_hint: {'center_y': .5}
+                    size_hint_y: .1
+                    text: "You've already spent"
+                    halign: 'left'
+                    font_size: '18sp'
+                    text_color: 252/255, 252/255, 252/255, 1
+                    opacity: 0.64
+                    theme_text_color: 'Custom'
                 MDLabel:
                     id: overall
-                    text_color: "skyblue"
-                    size_hint: 1, 0.05
-                    valign: 'middle'
+                    text_color: 'white'
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: '0'
                     theme_text_color: 'Custom'
-                    font_style: 'H4'
-        ScrollView:
-            size_hint_y: .9
-            MDList:
-                theme_text_color: 'Custom'
-                id: listexpenses
+                    font_size: '40sp'
+
+
+
+
+        # List
+        CustomMDBoxLayout:
+            padding: 0, 20, 0, 0 
+            size_hint_y: .6
+            ScrollView:
+                MDList:
+                    id: listexpenses
+                    padding: 0
+
+

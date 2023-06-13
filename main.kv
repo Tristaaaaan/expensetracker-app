@@ -10,7 +10,7 @@
         padding: 0, 20, 0, 0 
         # Card
         MDBoxLayout:
-            size_hint: .9, .2
+            size_hint: .9, .3
             pos_hint: {'center_y': 0.5, 'center_x': .5}
             MDCard:
                 md_bg_color: 127/255, 61/255, 255/255, 1
@@ -58,14 +58,14 @@
                 size_hint: 0.9, 1
                 pos_hint: {'center_y': .5, 'center_x': .5}
                 theme_text_color: 'Custom'
-                font_style: 'H4'
+                font_size: '24sp'
             MDFlatButton:
                 text: 'View All'
                 pos_hint: {'center_y': .5, 'center_x': .5}
                 size_hint_x: 0.1, 1
                 text_color: "gray"
                 theme_text_color: 'Custom'
-                font_style: 'Caption'
+                font_size: '14sp'
                 on_release:
                     root.view()
 
@@ -81,7 +81,7 @@
     MDFloatingActionButton:
         icon: 'plus-thick'
         md_bg_color: [127/255, 61/255, 255/255, 1]
-        pos_hint: {'center_x': .9, 'center_y': .1}
+        pos_hint: {'x': .8, 'center_y': .1}
         elevation_normal: 0
         on_release:
             app.root.current = "add_expenses"
@@ -93,18 +93,47 @@
     size_hint: 1, None
     spacing: 10
     MDBoxLayout:
+        pos_hint: {'center_y': .5, 'center_x': .5}
         orientation: 'vertical'
 
         MDBoxLayout:
-            AsyncImage: 
-                source: './Vector.png'
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            MDIconButton:
+                size_hint_x: 1
+                icon: 'check-circle'
+                disabled_color: 127/255, 61/255, 255/255, 1
+                theme_icon_color: 'Custom'
+                disabled: True
+                icon_size: '50sp'
         MDLabel:
             valign: 'middle'
             halign: 'center'
-            text: 'Transaction has been successfully added'
+            text: 'Transaction has been successfully added.'
             font_size: '12sp'
-            bold: True
 
+
+<DeniedExpense>:
+    orientation: "vertical"
+    size_hint: 1, None
+    spacing: 10
+    MDBoxLayout:
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            MDIconButton:
+                size_hint_x: 1
+                icon: 'alpha-x-circle'
+                disabled_color: 253/255, 60/255, 74/255, 1
+                theme_icon_color: 'Custom'
+                disabled: True
+                icon_size: '50sp'
+        MDLabel:
+            valign: 'middle'
+            halign: 'center'
+            text: 'Transaction has failed.'
+            font_size: '12sp'
 
 
 
@@ -112,23 +141,39 @@
     size_hint_y: None
     height: content.height
     MDCardSwipeLayerBox:
-
+        spacing: 10
         MDIconButton:
-            padding: 10
             icon: "trash-can"
             pos_hint: {"center_y": .5}
             on_release: root.remove_item(root)
             theme_text_color: 'Custom'
-            text_color: 127/255, 61/255, 255/255, 1
+            text_color: 'white'
     MDCardSwipeFrontBox:
-
+        canvas.before:
+            Color:
+                rgba: [1, 1, 1, 1]  # Set the desired background color here
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [0,]  # Set the radius value to 0 to remove the rounded corners
         ListItemWithIcon:
             id: content
-            text: root.text
-            secondary_text: root.secondary_text
+            text_color: 41/255, 43/255, 45/255, 1
+            secondary_text_color: 145/255, 145/255, 159/255, 1
+            secondary_theme_text_color: 'Custom'
+            text: f"[size=16sp]{root.text}[/size]"
+            secondary_text: f"[size=13sp]{root.secondary_text}[/size]"
             _no_ripple_effect: True
             CustomIconLeftWidget:
-                icon: root.icon
-                disabled: True
-                theme_text_color: 'Custom'
-                disabled_color: [253/255, 60/255, 74/255, 1]
+                canvas.before:
+                    Color:
+                        rgba: root.md_bg_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10), dp(10)] 
+                icon: root.icon 
+                theme_icon_color: 'Custom'
+                icon_color: root.icon_color
+                _no_ripple_effect: True
+
