@@ -228,8 +228,12 @@ class AddExpenses(Screen):
         self.manager.current = "first"
 
     def on_kv_post(self, base_widget):
-        self.ids.food.text_color = [253/255, 60/255, 74/255, 1]
+        self.ids.food.text_color = [127/255, 61/255, 255/255, 1]
         self.category = "food"
+        self.ids.food_bg.md_bg_color = [189/255, 181/255, 213/255, 1]
+        self.ids.acads_bg.md_bg_color = [252/255, 238/255, 212/255, 1]
+        self.ids.transpo_bg.md_bg_color = [189/255, 220/255, 1, 1]
+        self.ids.others_bg.md_bg_color = [207/255, 250/255, 234/255, 1]
 
         return super().on_kv_post(base_widget)
 
@@ -245,7 +249,7 @@ class AddExpenses(Screen):
                     if task[3] == 'food':
                         self.icon = "food"
                         self.identity = 'Food'
-                        self.md_bg_color = (252/255, 238/255, 212/255, 1)
+                        self.md_bg_color = (253/255, 213/255, 215/255, 1)
                         self.icon_color = (253/255, 60/255, 74/255, 1)
                     elif task[3] == 'acads':
                         self.icon = 'school-outline'
@@ -271,14 +275,18 @@ class AddExpenses(Screen):
         except Exception:
             pass
 
-    def color(self, instance):
-        self.ids.food.text_color = "gray"
-        self.ids.acads.text_color = "gray"
-        self.ids.transpo.text_color = "gray"
-        self.ids.others.text_color = "gray"
-        instance.text_color = [253/255, 60/255, 74/255, 1]
-
-        self.category = str(instance.text)
+    def color(self, identity, background):
+        self.ids.food.text_color = [253/255, 60/255, 74/255, 1]
+        self.ids.acads.text_color = [252/255, 172/255, 18/255, 1]
+        self.ids.transpo.text_color = [0, 119/255, 1, 1]
+        self.ids.others.text_color = [0, 168/255, 107/255, 1]
+        self.ids.food_bg.md_bg_color = [253/255, 213/255, 215/255, 1]
+        self.ids.acads_bg.md_bg_color = [252/255, 238/255, 212/255, 1]
+        self.ids.transpo_bg.md_bg_color = [189/255, 220/255, 1, 1]
+        self.ids.others_bg.md_bg_color = [207/255, 250/255, 234/255, 1]
+        identity.text_color = [127/255, 61/255, 255/255, 1]
+        background.md_bg_color = [189/255, 181/255, 213/255, 1]
+        self.category = str(identity.text)
 
     def add_task(self):
 

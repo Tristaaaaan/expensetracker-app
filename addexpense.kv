@@ -100,7 +100,7 @@
                     cols: 2
                     size_hint: 1, 1
                     MDCard:
-                        elevation: 2
+                        id: food_bg
                         MDIconButton:
                             pos_hint: {'center_y': .5}
                             id: food
@@ -112,9 +112,9 @@
                             text_color: "gray"
                             theme_text_color: 'Custom'
                             on_press:
-                                root.color(food)
+                                root.color(food, food_bg)
                     MDCard:
-                        elevation: 2
+                        id: acads_bg
                         MDIconButton:
                             id: acads
                             size_hint: 1, 1
@@ -126,10 +126,10 @@
                             text_color: "gray"
                             theme_text_color: 'Custom'
                             on_press:
-                                root.color(acads)   
+                                root.color(acads, acads_bg)   
 
                     MDCard:
-                        elevation: 2
+                        id: transpo_bg
                         MDIconButton:
                             id: transpo
                             size_hint: 1, 1
@@ -141,10 +141,10 @@
                             text_color: "gray"
                             theme_text_color: 'Custom'
                             on_press:
-                                root.color(transpo)
+                                root.color(transpo, transpo_bg)
         
                     MDCard:
-                        elevation: 2
+                        id: others_bg
                         MDIconButton:
                             size_hint: 1, 1
                             pos_hint: {'center_y': .5}
@@ -156,7 +156,7 @@
                             theme_text_color: 'Custom'
                             border: [20, 20, 20, 20]
                             on_press:
-                                root.color(others)                
+                                root.color(others, others_bg)                
             MDFlatButton:
                 text: 'Continue'
                 text_color: 'white'
