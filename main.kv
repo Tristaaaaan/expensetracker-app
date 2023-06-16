@@ -1,0 +1,179 @@
+# First Window
+<FirstWindow>:
+    name: "first"
+    container: container
+    currentmonth: currentmonth
+
+    MDBoxLayout:
+        size_hint: 1, 1
+        orientation: 'vertical'
+        padding: 0, 40, 0, 0 
+        # Card
+        MDBoxLayout:
+            size_hint: .9, .3
+            pos_hint: {'center_y': 0.5, 'center_x': .5}
+            MDCard:
+                md_bg_color: 127/255, 61/255, 255/255, 1
+                theme_text_color: 'Custom'
+                size_hint: .9, 1
+                radius: 20
+                padding: 20
+                elevation: 2
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    MDLabel:
+                        id: currentmonth
+                        text: ''
+                        font_style:'Subtitle2'
+                        size_hint: .9, 0.1
+                        theme_text_color: 'Custom'
+                        text_color: "white"
+                        valign: 'middle'
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        MDLabel:
+                            font_style: "H5"
+                            id: expense
+                            font_size: '50sp'
+                            theme_text_color: 'Custom'
+                            text_color: "white"
+                            size_hint: 1, 1
+                        MDLabel:
+                            text: "USD"
+                            font_style:'Subtitle2'
+                            halign: 'right'
+                            size_hint: .3, 1
+                            theme_text_color: 'Custom'
+                            text_color: "white"
+                            valign: 'middle'    
+
+        # Text                    
+        MDBoxLayout:
+            orientation: 'horizontal'
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            size_hint: .9, .1
+            MDLabel:
+                text: "Today"
+                text_color: "gray"
+                size_hint: 0.9, 1
+                pos_hint: {'center_y': .5, 'center_x': .5}
+                theme_text_color: 'Custom'
+                font_size: '24sp'
+            MDFlatButton:
+                text: 'View All'
+                pos_hint: {'center_y': .5, 'center_x': .5}
+                size_hint_x: 0.1
+                text_color: "gray"
+                theme_text_color: 'Custom'
+                font_size: '14sp'
+                on_release:
+                    root.view()
+
+        # List
+        MDBoxLayout:
+            size_hint_y: .7
+            ScrollView:
+                MDList:
+                    id: container
+                    padding: 0
+    
+
+    MDFloatingActionButton:
+        icon: 'plus-thick'
+        md_bg_color: [127/255, 61/255, 255/255, 1]
+        pos_hint: {'x': .8, 'center_y': .1}
+        elevation_normal: 0
+        on_release:
+            app.root.current = "add_expenses"
+            root.manager.transition.direction = "left"
+
+
+<ApproveExpense>:
+    orientation: "vertical"
+    size_hint: 1, None
+    spacing: 10
+    MDBoxLayout:
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            MDIconButton:
+                size_hint_x: 1
+                icon: 'check-circle'
+                disabled_color: 127/255, 61/255, 255/255, 1
+                theme_icon_color: 'Custom'
+                disabled: True
+                icon_size: '50sp'
+        MDLabel:
+            valign: 'middle'
+            halign: 'center'
+            text: 'Transaction has been successfully added.'
+            font_size: '12sp'
+
+
+<DeniedExpense>:
+    orientation: "vertical"
+    size_hint: 1, None
+    spacing: 10
+    MDBoxLayout:
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            MDIconButton:
+                size_hint_x: 1
+                icon: 'alpha-x-circle'
+                disabled_color: 253/255, 60/255, 74/255, 1
+                theme_icon_color: 'Custom'
+                disabled: True
+                icon_size: '50sp'
+        MDLabel:
+            valign: 'middle'
+            halign: 'center'
+            text: 'Transaction has failed.'
+            font_size: '12sp'
+
+
+
+<SwipeToDeleteItem>:
+    size_hint_y: None
+    height: content.height
+    MDCardSwipeLayerBox:
+        spacing: 10
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+            on_release: root.remove_item(root)
+            theme_text_color: 'Custom'
+            text_color: 'white'
+    MDCardSwipeFrontBox:
+        canvas.before:
+            Color:
+                rgba: [1, 1, 1, 1]  # Set the desired background color here
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [0,]  # Set the radius value to 0 to remove the rounded corners
+        ListItemWithIcon:
+            id: content
+            text_color: 41/255, 43/255, 45/255, 1
+            secondary_text_color: 145/255, 145/255, 159/255, 1
+            secondary_theme_text_color: 'Custom'
+            text: f"[size=16sp]{root.text}[/size]"
+            secondary_text: f"[size=13sp]{root.secondary_text}[/size]"
+            _no_ripple_effect: True
+            CustomIconLeftWidget:
+                canvas.before:
+                    Color:
+                        rgba: root.md_bg_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10), dp(10)] 
+                icon: root.icon 
+                theme_icon_color: 'Custom'
+                icon_color: root.icon_color
+                _no_ripple_effect: True
+
