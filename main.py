@@ -14,6 +14,7 @@ from database import Database
 from kivy.properties import StringProperty, ColorProperty
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCardSwipe
+
 db = Database()
 
 
