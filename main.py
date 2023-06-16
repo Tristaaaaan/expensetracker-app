@@ -301,6 +301,10 @@ class AddExpenses(Screen):
 
                 self.ids.price.text = ''
                 self.input_added()
+
+                expenses = int(db.expenses_sum())
+                MDApp.get_running_app().root.first.ids.expense.text = str(
+                    (moneyFormat.money(expenses)))
             else:
                 self.input_denied()
         except:
