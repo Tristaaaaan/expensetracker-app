@@ -95,17 +95,17 @@ class FirstWindow(Screen):
                 self.ids.expense.text = str((moneyFormat.money(expenses)))
 
                 for task in reversed(day_expenses):
-                    if task[3] == 'food':
+                    if task[2] == 'food':
                         self.icon = "food"
                         self.identity = 'Food'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (253/255, 60/255, 74/255, 1)
-                    elif task[3] == 'acads':
+                    elif task[2] == 'acads':
                         self.icon = 'school-outline'
                         self.identity = 'School'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (252/255, 172/255, 18/255, 1)
-                    elif task[3] == 'bus':
+                    elif task[2] == 'bus':
                         self.identity = 'Transportation'
                         self.icon = 'bus'
                         self.icon_color = (0, 119/255, 1, 1)
@@ -146,17 +146,17 @@ class ViewExpenses(Screen):
                 self.ids.overall.text = str((moneyFormat.money(expenses)))
 
                 for spent in reversed(all_expenses):
-                    if spent[3] == 'food':
+                    if spent[2] == 'food':
                         self.icon = "food"
                         self.identity = 'Food'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (253/255, 60/255, 74/255, 1)
-                    elif spent[3] == 'acads':
+                    elif spent[2] == 'acads':
                         self.icon = 'school-outline'
                         self.identity = 'School'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (252/255, 172/255, 18/255, 1)
-                    elif spent[3] == 'bus':
+                    elif spent[2] == 'bus':
                         self.identity = 'Transportation'
                         self.icon = 'bus'
                         self.icon_color = (0, 119/255, 1, 1)
@@ -187,17 +187,17 @@ class ViewExpenses(Screen):
             if day_expenses != []:
 
                 for task in reversed(day_expenses):
-                    if task[3] == 'food':
+                    if task[2] == 'food':
                         self.icon = "food"
                         self.identity = 'Food'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (253/255, 60/255, 74/255, 1)
-                    elif task[3] == 'acads':
+                    elif task[2] == 'acads':
                         self.icon = 'school-outline'
                         self.identity = 'School'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (252/255, 172/255, 18/255, 1)
-                    elif task[3] == 'bus':
+                    elif task[2] == 'bus':
                         self.identity = 'Transportation'
                         self.icon = 'bus'
                         self.icon_color = (0, 119/255, 1, 1)
@@ -240,24 +240,25 @@ class AddExpenses(Screen):
 
     def on_leave(self):
         MDApp.get_running_app().root.first.ids.container.clear_widgets()
-        try:
-            current_date = datetime.now().strftime('%A, %B %d, %Y')
-            day_expenses = db.obtain_expenses(current_date)
 
+        current_date = datetime.now().strftime('%A, %B %d, %Y')
+        day_expenses = db.obtain_expenses(current_date)
+
+        try:
             if day_expenses != []:
 
                 for task in reversed(day_expenses):
-                    if task[3] == 'food':
+                    if task[2] == 'food':
                         self.icon = "food"
                         self.identity = 'Food'
                         self.md_bg_color = (253/255, 213/255, 215/255, 1)
                         self.icon_color = (253/255, 60/255, 74/255, 1)
-                    elif task[3] == 'acads':
+                    elif task[2] == 'acads':
                         self.icon = 'school-outline'
                         self.identity = 'School'
                         self.md_bg_color = (252/255, 238/255, 212/255, 1)
                         self.icon_color = (252/255, 172/255, 18/255, 1)
-                    elif task[3] == 'bus':
+                    elif task[2] == 'bus':
                         self.identity = 'Transportation'
                         self.icon = 'bus'
                         self.icon_color = (0, 119/255, 1, 1)
@@ -296,30 +297,7 @@ class AddExpenses(Screen):
         try:
             price = float(self.ids.price.text)
             if price != 0:
-                select_expense = db.create_expenses(price,
-                                                    date,
-                                                    self.category)
-
-                self.listed = MDApp.get_running_app().root.first.ids.container
-
-                if select_expense[3] == 'food':
-                    self.icon = "food"
-                elif select_expense[3] == 'acads':
-                    self.icon = 'school-outline'
-                elif select_expense[3] == 'bus':
-                    self.icon = 'bus'
-                else:
-                    self.icon = 'dots-horizontal-circle-outline'
-
-                convert_money = moneyFormat.money(int(select_expense[1]))
-
-                self.listed.add_widget(SwipeToDeleteItem(
-                    pk=select_expense[0], text=convert_money, secondary_text=select_expense[2], icon=self.icon))
-
-                expenses_sum = db.expenses_sum()
-
-                MDApp.get_running_app().root.first.ids.expense.text = str(
-                    moneyFormat.money(expenses_sum))
+                db.create_expenses(price, date, self.category)
 
                 self.ids.price.text = ''
                 self.input_added()

@@ -28,7 +28,7 @@ class Database:
     def obtain_expenses(self, date):
         """Get expenses from the current date"""
         day_expenses = self.spent.execute(
-            "SELECT * FROM expense WHERE due_date = ?", (date,)).fetchall()
+            "SELECT id, money_spent, category FROM expense WHERE due_date = ?", (date,)).fetchall()
 
         return day_expenses
 
@@ -39,7 +39,8 @@ class Database:
         self.data_con.commit()
 
     def all_data(self):
-        expenses_data = self.spent.execute("SELECT * FROM expense").fetchall()
+        expenses_data = self.spent.execute(
+            "SELECT id, money_spent, category FROM expense").fetchall()
 
         return expenses_data
 
