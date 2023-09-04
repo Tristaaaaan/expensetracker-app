@@ -1,0 +1,29 @@
+<LoadingScreen>:
+  name: "loading"
+  MDBoxLayout:
+    size_hint: 1, 1
+    pos_hint: { "center_x": .5, "center_y": .5 }
+    MDBoxLayout:
+      size_hint: 1, .6
+      orientation: "vertical"
+      pos_hint: { "center_x": .5, "center_y": .5 }
+      MDSpinner:
+        size_hint: .2, .4
+        size: dp(5), dp(5)
+        pos_hint: {'center_x': .5}
+        determinate: False
+      
+      MDLabel:
+        text: 'Beware of little expenses. A small leak will sink a great ship.'
+        halign: 'center'
+        pos_hint: {'center_x': .5}
+        size_hint: .9, .1
+        font_name: 'Poppins/Poppins-Italic'
+        font_size: '16sp'
+      MDLabel:
+        text: 'Benjamin Franklin'
+        halign: 'center'
+        pos_hint: {'center_x': .5}
+        size_hint: .9, .05
+        font_size: '12sp'
+        font_name: 'Poppins/Poppins-Regular'

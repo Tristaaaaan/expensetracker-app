@@ -1,21 +1,78 @@
 
+# Import the function from your module
+from secure import set_file_permissions
+import os
+import threading
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
-
+from kivymd.uix.spinner import MDSpinner
 from kivy.lang import Builder
 from datetime import datetime
 from kivy.clock import Clock
 from kivymd.uix.list import TwoLineAvatarIconListItem, IconLeftWidget
 import moneyFormat
-from database import Database
 from kivy.properties import StringProperty, ColorProperty
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCardSwipe
-
+import socket
+import time
+from database import Database
 db = Database()
+
+# Your Kivy app code here
+
+# Example usage:
+config_file_path = 'credentials/database.json'
+set_file_permissions(config_file_path)
+
+
+class NoInternet(Screen):
+    Builder.load_file('noInternet.kv')
+
+
+class LoadingScreen(Screen):
+    Builder.load_file('loadingScreen.kv')
+
+    def on_enter(self, *args):
+
+        # Check for internet connection before scheduling the screen switch
+        if self.is_internet_available():
+            Clock.schedule_once(self.switch_screen, 5)
+            x = threading.Thread(target=self.connect)
+            x.start()
+        else:
+            # Handle the case when there is no internet connection
+            print("No internet connection available")
+            # You can add code here to display a message to the user or take other actions
+            Clock.schedule_once(self.noInternet, 5)
+        return super().on_enter(*args)
+
+    def connect(self):
+        db.connect_to_database()
+
+    def is_internet_available(self):
+        try:
+            # Attempt to connect to a well-known internet server (e.g., Google DNS)
+            socket.create_connection(("8.8.8.8", 53), timeout=5)
+            return True
+        except OSError:
+            pass
+        return False
+
+    def switch_screen(self, dt):
+        # This method will be called after the scheduled delay
+        # You can use the ScreenManager to switch to another screen
+        # Replace 'first' with the name of the screen you want to switch to
+        self.manager.current = 'first'
+
+    def noInternet(self, dt):
+        # This method will be called after the scheduled delay
+        # You can use the ScreenManager to switch to another screen
+        # Replace 'first' with the name of the screen you want to switch to
+        self.manager.current = 'noInternet'
 
 
 class ApproveExpense(MDBoxLayout):
@@ -79,14 +136,17 @@ class FirstWindow(Screen):
     Builder.load_file('main.kv')
     # Do not forget to initialize if you want to load a data on start of the application
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def on_enter(self, *args):
         Clock.schedule_once(self.todays_expenses)
 
+        return super().on_enter(*args)
+
     def todays_expenses(self, *args):
+        self.show_spinner_dialog()
         current_month = datetime.now().strftime('%B')
         self.ids.currentmonth.text = 'This month of ' + current_month
         try:
+            start_time = time.time()
             current_date = datetime.now().strftime('%A, %B %d, %Y')
             day_expenses = db.obtain_expenses(current_date)
 
@@ -122,11 +182,36 @@ class FirstWindow(Screen):
                     self.ids.container.add_widget(add_expenses)
             else:
                 self.ids.expense.text = str((moneyFormat.money(0)))
+
+            end_time = time.time()  # Record the end time
+            execution_time = end_time - start_time
+            print(f"Data loaded in {execution_time:.4f} seconds")
+            self.dismiss_spinner_dialog()
         except Exception:
+            self.dismiss_spinner_dialog()
             pass
 
     def on_leave(self):
         self.ids.container.clear_widgets()
+
+    def show_spinner_dialog(self):
+        # Create a dialog box
+        self.dialog = MDDialog(
+            text="Loading data...",
+            size_hint=(0.7, 0.3),
+        )
+
+        # Create a spinner and add it to the dialog box
+        spinner = MDSpinner(size_hint=(None, None), size=(46, 46))
+        spinner.active = True
+        self.dialog.add_widget(spinner)
+
+        # Open the dialog box
+        self.dialog.open()
+
+    def dismiss_spinner_dialog(self):
+        # Close the dialog box
+        self.dialog.dismiss()
 
     def view(self):
         self.manager.current = "view_expenses"
@@ -307,7 +392,8 @@ class AddExpenses(Screen):
                     (moneyFormat.money(expenses)))
             else:
                 self.input_denied()
-        except:
+        except ValueError as e:
+            print(e)
             self.input_denied()
 
     def invalid_input(self):
@@ -348,6 +434,9 @@ class AddExpenses(Screen):
         self.ids.price.text = '0'
         # Schedule the dialog dismissal after 3 seconds
         Clock.schedule_once(lambda dt: self.dialog.dismiss(), 3)
+
+    def on_leave(self):
+        MDApp.get_running_app().root.first.ids.container.clear_widgets()
 
 
 class WindowManager(ScreenManager):
